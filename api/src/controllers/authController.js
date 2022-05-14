@@ -1,12 +1,13 @@
-import Users from "../models/Users.js";
+import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import { createError } from "../utils/error.js";
 
 export const register = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
-    const newUser = new Users({
+    const newUser = new User({
       username: req.body.username,
       email: req.body.email,
       password: hash,
@@ -14,6 +15,24 @@ export const register = async (req, res, next) => {
 
     await newUser.save();
     res.status(200).send("Usuário criado com sucesso.");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const login = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (!user) return next(createError(400, "Usuário e senha, inválidos."));
+
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!isPasswordCorrect)
+      return next(createError(400, "Usuário e senha, inválidos."));
+
+    res.status(200).send("Login feito com sucesso.");
   } catch (error) {
     next(error);
   }
