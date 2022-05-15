@@ -5,32 +5,32 @@ import {
   getUsers,
   updateUser,
 } from "../controllers/userController.js";
-import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
+import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/checkauth", verifyToken, (req, res, next) => {
-  res.send("Olá, você está logado.");
-});
+// router.get("/checkauth", verifyToken, (req, res, next) => {
+//   res.send("Olá, você está logado.");
+// });
 
-router.get("/checkuser/:id", verifyUser, (req, res, next) => {
-  res.send("Olá, você está logado e pode apagar a sua conta.");
-});
+// router.get("/checkuser/:id", verifyUser, (req, res, next) => {
+//   res.send("Olá, você está logado e pode apagar a sua conta.");
+// });
 
-router.get("/checkadmin/:id", verifyAdmin, (req, res, next) => {
-  res.send("Olá admin, você está logado e pode apagar qualquer conta.");
-});
+// router.get("/checkadmin/:id", verifyAdmin, (req, res, next) => {
+//   res.send("Olá admin, você está logado e pode apagar qualquer conta.");
+// });
 
 //Updata a Users
-router.put("/:id", updateUser);
+router.put("/:id", verifyUser, updateUser);
 
 //Delete a User
-router.delete("/:id", deleteUser);
+router.delete("/:id", verifyUser, deleteUser);
 
 //Get a User by id
-router.get("/:id", getUser);
+router.get("/:id", verifyUser, getUser);
 
 //Get all Users
-router.get("/", getUsers);
+router.get("/", verifyAdmin, getUsers);
 
 export default router;
