@@ -5,7 +5,7 @@ import {
   getUsers,
   updateUser,
 } from "../controllers/userController.js";
-import { verifyToken, verifyUser } from "../utils/verifyToken.js";
+import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
@@ -15,6 +15,10 @@ router.get("/checkauth", verifyToken, (req, res, next) => {
 
 router.get("/checkuser/:id", verifyUser, (req, res, next) => {
   res.send("Olá, você está logado e pode apagar a sua conta.");
+});
+
+router.get("/checkadmin/:id", verifyAdmin, (req, res, next) => {
+  res.send("Olá admin, você está logado e pode apagar qualquer conta.");
 });
 
 //Updata a Users
