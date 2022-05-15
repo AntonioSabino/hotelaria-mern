@@ -10,19 +10,19 @@ import { verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
-//Create a hotel
+//Create a room
 router.post("/:hotelId", verifyAdmin, createRoom);
 
-//Updata a hotel
+//Updata a room
 router.put("/:id", verifyAdmin, updateRoom);
 
-//Delete a hotel
+//Delete a room
 router.delete("/:id/:hotelId", verifyAdmin, deleteRoom);
 
-//Get a hotel by id
+//Get a room by id
 router.get("/:id", getRoom);
 
-//Get all hotels
+//Get all rooms
 router.get("/", getRooms);
 
 export default router;
